@@ -1,7 +1,10 @@
 const uuid = require('uuid');
 const express = require('express')
 const app = express()
+const cors = require('cors');
 app.use(express.json())  
+app.use(cors())  
+
    
 const dotenv = require('dotenv').config();
 const mongoose = require("mongoose");
@@ -36,14 +39,16 @@ const contactSchema = {
 const Contact = mongoose.model("FistApp", contactSchema);
 
 app.get('/', async (req, res) =>  {
-    
+      res.set('Access-Control-Allow-Origin', '*');
       try {
  
       const uri = "mongodb://adminUser:adminUser@127.0.0.1:27017/?authMechanism=DEFAULT";
   
       mongoose.connect(uri, {}).then(()=>console.log('connected')).catch(e=>console.log(e));
 
-      const person = await Contact.findOne({ 'email': 'emails1' }, 'email query');
+      const person = await Contact.findOne({ 'email': 'emails1' }, 'email query').exec().then(docs=>{
+        console.log(JSON.stringify(docs))    
+      });
            
       const tt=10
     
