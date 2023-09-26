@@ -1,0 +1,1 @@
+start cmd /k "startService.bat & cmd /c"
